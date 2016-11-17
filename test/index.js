@@ -85,3 +85,53 @@ test('test add to cart when another item exists', function (t) {
   t.deepEquals(actual, expected, 'add to cart works when other items types are present')
   t.end()
 })
+
+test('return newState when nothing to remove', function (t) {
+  var state = {
+    products: [
+      {id: 1, name: 'The Name of the Wind', price: 12.50, details: 'Kvothe is cool'},
+      {id: 2, name: 'Firefall', price: 11.29, details: 'Aliens are scary. Space vampires'},
+      {id: 3, name: 'Kingdom of fear', price: 34.33, details: 'Song of the sausage creature'}
+    ],
+    cart: {
+    }
+  }
+  var expected = {
+    products: [
+      {id: 1, name: 'The Name of the Wind', price: 12.50, details: 'Kvothe is cool'},
+      {id: 2, name: 'Firefall', price: 11.29, details: 'Aliens are scary. Space vampires'},
+      {id: 3, name: 'Kingdom of fear', price: 34.33, details: 'Song of the sausage creature'}
+    ],
+    cart: {
+    }
+  }
+  var actual = reducer(state, {type: 'REMOVE_FROM_CART', payload: 1})
+  t.deepEquals(actual, expected, 'return newState when nothing to remove')
+  t.end()
+})
+
+test('Test if this removes item from cart', function (t) {
+  var state = {
+    products: [
+      {id: 1, name: 'The Name of the Wind', price: 12.50, details: 'Kvothe is cool'},
+      {id: 2, name: 'Firefall', price: 11.29, details: 'Aliens are scary. Space vampires'},
+      {id: 3, name: 'Kingdom of fear', price: 34.33, details: 'Song of the sausage creature'}
+    ],
+    cart: {
+      1: 1
+    }
+  }
+  var expected = {
+    products: [
+      {id: 1, name: 'The Name of the Wind', price: 12.50, details: 'Kvothe is cool'},
+      {id: 2, name: 'Firefall', price: 11.29, details: 'Aliens are scary. Space vampires'},
+      {id: 3, name: 'Kingdom of fear', price: 34.33, details: 'Song of the sausage creature'}
+    ],
+    cart: {
+      1: 0
+    }
+  }
+  var actual = reducer(state, {type: 'REMOVE_FROM_CART', payload: 1})
+  t.deepEquals(actual, expected, 'Successfully removes item from cart')
+  t.end()
+})
