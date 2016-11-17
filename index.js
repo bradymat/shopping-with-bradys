@@ -2,6 +2,7 @@ const createStore = require('redux').createStore
 const morph = require('morphdom')
 
 const reducer = require('./reducer')
+const cart = require('./hyperscript/cartTemplate')
 
 var initialState = {
   products: [
@@ -10,7 +11,22 @@ var initialState = {
     {id: 3, name: 'Kingdom of fear', price: 34.33, details: 'Song of the sausage creature'}
   ],
   cart: {
+    1: 2,
+    3: 7
   }
 }
 
-store = createStore(reducer, initialState)
+
+
+const store = createStore(reducer, initialState)
+const dispatch = store.dispatch
+const main = document.querySelector('main')
+
+function updateView(){
+  const state = store.getState()
+  const newView = cart(state)
+  morph(initialView, newView)
+}
+
+const initialView = main.appendChild(cart(initialState, dispatch))
+store.subscribe(updateView)
